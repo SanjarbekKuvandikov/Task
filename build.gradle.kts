@@ -30,7 +30,7 @@ dependencies {
 
 	// https://mvnrepository.com/artifact/org.postgresql/r2dbc-postgresql
 	implementation("org.postgresql:r2dbc-postgresql:1.0.7.RELEASE")
-
+	implementation("org.postgresql:postgresql:42.7.7")
 	compileOnly("org.projectlombok:lombok")
 	annotationProcessor("org.projectlombok:lombok")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
