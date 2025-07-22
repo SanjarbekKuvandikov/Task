@@ -2,10 +2,8 @@ package com.example.Task.service;
 
 import com.example.Task.dto.TaskRequest;
 import com.example.Task.entity.TaskEntity;
-import com.example.Task.entity.TaskStatusEntity;
 import com.example.Task.entity.common.TaskStatus;
 import com.example.Task.repository.TaskRepository;
-import com.example.Task.repository.TaskStatusRepository;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -16,11 +14,9 @@ import java.time.LocalDateTime;
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
-    private final TaskStatusRepository taskStatusRepository;
 
-    public TaskService(TaskRepository taskRepository, TaskStatusRepository taskStatusRepository) {
+    public TaskService(TaskRepository taskRepository) {
         this.taskRepository = taskRepository;
-        this.taskStatusRepository = taskStatusRepository;
     }
 
     public Mono<TaskEntity> save(TaskRequest request) {
@@ -28,26 +24,18 @@ public class TaskService {
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
         task.setCreatedAt(LocalDateTime.now());
+        task.setStatus(TaskStatus.valueOf(request.getStatus().toUpperCase()));
 
-        return taskRepository.save(task).
-                flatMap(savedTask -> {
-                    TaskStatusEntity taskStatus = new TaskStatusEntity();
-                    taskStatus.setTaskId(task.getId());
-                    taskStatus.setStatus(String.valueOf(TaskStatus.TODO));
-                    taskStatus.setUpdated(LocalDateTime.now());
-                    return taskStatusRepository.save(taskStatus).thenReturn(savedTask);
-                });
+        return taskRepository.save(task);
     }
 
-    public Mono<TaskStatusEntity> updateStatus(Long id,String statusString) {
+    public Mono<TaskEntity> updateStatus(Long id,String statusString) {
         return taskRepository.findById(id)
                 .switchIfEmpty(Mono.error(new ChangeSetPersister.NotFoundException()))
                 .flatMap(task -> {
-                    TaskStatusEntity taskStatus = new TaskStatusEntity();
-                    taskStatus.setTaskId(task.getId());
-                    taskStatus.setStatus(String.valueOf(TaskStatus.valueOf(statusString.toUpperCase())));
-                    taskStatus.setUpdated(LocalDateTime.now());
-                    return taskStatusRepository.save(taskStatus);
+                    task.setStatus(TaskStatus.valueOf(statusString.toUpperCase()));
+                    task.setUpdatedAt(LocalDateTime.now());
+                    return taskRepository.save(task);
                         });
     }
 
@@ -58,12 +46,7 @@ public class TaskService {
         return taskRepository.findAll();
     }
     public Mono<TaskEntity> findTaskById(Long id) {
-        return taskRepository.findById(id);
-    }
-    public Flux<TaskStatusEntity> findAllStatus() {
-        return taskStatusRepository.findAll();
-    }
-    public Flux<TaskStatusEntity> findStatusByTaskId(Long taskId) {
-        return taskStatusRepository.getAllByTaskId(taskId);
+        return taskRepository.findById(id)
+                .switchIfEmpty(Mono.error(new RuntimeException("Task not found with id:  + id")));
     }
 }
