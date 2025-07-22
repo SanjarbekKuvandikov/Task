@@ -1,0 +1,8 @@
+### GET request to example server
+POST http://localhost:8080/api/task/create
+Content-Type: application/json
+
+{
+  "title": "Read a book",
+  "description": "100 percent working"
+}
