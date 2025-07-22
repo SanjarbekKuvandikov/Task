@@ -11,4 +11,6 @@ public class TaskRequest {
     private String title;
     @NotBlank(message = "Description cannot be empty")
     private String description;
+    @NotBlank(message = "Status cannot be empty")
+    private String status;
 }
