@@ -1,5 +1,6 @@
 package com.example.Task.entity;
 
+import com.example.Task.entity.common.TaskStatus;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
@@ -13,5 +14,7 @@ public class TaskEntity {
     private long id;
     private String title;
     private String description;
+    private TaskStatus status;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
