@@ -27,7 +27,8 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-r2dbc
 	implementation("org.springframework.boot:spring-boot-starter-data-r2dbc:3.5.3")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
-
+	// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation
+	implementation("org.springframework.boot:spring-boot-starter-validation:3.5.3")
 	// https://mvnrepository.com/artifact/org.postgresql/r2dbc-postgresql
 	implementation("org.postgresql:r2dbc-postgresql:1.0.7.RELEASE")
 	implementation("org.postgresql:postgresql:42.7.7")
