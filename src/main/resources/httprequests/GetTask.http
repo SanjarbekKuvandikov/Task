@@ -1,7 +1,5 @@
 ### GET request to example server
 GET http://localhost:8080/api/task/get-tasks-by-id?id=1
 
-//GET http://localhost:8080/api/task/get-all-tasks
-
 
 ###
