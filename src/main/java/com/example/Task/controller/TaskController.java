@@ -2,7 +2,6 @@ package com.example.Task.controller;
 
 import com.example.Task.dto.TaskRequest;
 import com.example.Task.entity.TaskEntity;
-import com.example.Task.entity.TaskStatusEntity;
 import com.example.Task.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -29,8 +28,8 @@ public class TaskController {
         return taskService.deleteTask(id);
     }
 
-    @PostMapping("update-status")
-    public Mono<ResponseEntity<TaskStatusEntity>> updateStatus(@RequestParam("id") Long id,
+    @PutMapping("update-status")
+    public Mono<ResponseEntity<TaskEntity>> updateStatus(@RequestParam("id") Long id,
                                                                @RequestParam("status") String status){
         return taskService.updateStatus(id, status).map(ResponseEntity::ok);
     }
@@ -45,14 +44,5 @@ public class TaskController {
         return taskService.findTaskById(id);
     }
 
-    @GetMapping("get-all-status")
-    public Flux<TaskStatusEntity> getAllStatus(){
-        return taskService.findAllStatus();
-    }
-
-    @GetMapping("get-status-by-task-id")
-    public Flux<TaskStatusEntity> getStatusById(@RequestParam("id") Long id){
-        return taskService.findStatusByTaskId(id);
-    }
 
 }
